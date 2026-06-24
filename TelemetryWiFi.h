@@ -13,7 +13,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <Update.h>
-#include "FlySkyiBUS.h"
+#include "../iFly/FlySkyiBUS.h"
 
 #define WIFI_LOG_CAPACITY   60
 #define WIFI_LOG_LINE_LEN  140

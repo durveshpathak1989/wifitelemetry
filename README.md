@@ -1,5 +1,9 @@
 # Test Quad WiFiTelemetry Library
 
+## Explain It Simply
+
+This module makes the drone share information over Wi-Fi. A browser or ground station can ask for sensor values, tuning values, logs, and update pages.
+
 This library provides the ESP32 SoftAP telemetry, tuning, timing, spectrum, flight-log, and OTA HTTP endpoints.
 
 ## Pin Map

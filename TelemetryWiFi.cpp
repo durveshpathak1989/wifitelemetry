@@ -5,7 +5,7 @@
  */
 
 #include "TelemetryWiFi.h"
-#include "DebugConfig.h"
+#include "../DebugConfig/DebugConfig.h"
 
 TelemetryWiFi telemetryWiFi(80);
 
