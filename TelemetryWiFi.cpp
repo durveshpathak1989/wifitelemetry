@@ -477,7 +477,7 @@ void TelemetryWiFi::_handleNotFound() {
 String TelemetryWiFi::_jsonFromPacket(const TelemetryPacket& p) const
 {
     String j;
-    j.reserve(3200);
+    j.reserve(6500);
     j += "{\"ok\":true";
     j += ",\"tick\":"    + String(p.tick);
     j += ",\"mode\":\""  + String(p.mode ? p.mode : "UNKNOWN") + "\"";
@@ -493,6 +493,10 @@ String TelemetryWiFi::_jsonFromPacket(const TelemetryPacket& p) const
     j += ",\"roll\":"    + String(p.roll_deg,  2);
     j += ",\"pitch\":"   + String(p.pitch_deg, 2);
     j += ",\"yaw\":"     + String(p.yaw_deg,   2);
+    j += ",\"q0\":"      + String(p.q0, 6);
+    j += ",\"q1\":"      + String(p.q1, 6);
+    j += ",\"q2\":"      + String(p.q2, 6);
+    j += ",\"q3\":"      + String(p.q3, 6);
 
     // PID/control attitude after level-zero offset.
     j += ",\"rollCtrl\":"  + String(p.roll_ctrl_deg,  2);
@@ -512,6 +516,7 @@ String TelemetryWiFi::_jsonFromPacket(const TelemetryPacket& p) const
     j += ",\"mx\":"      + String(p.mx_uT, 3);
     j += ",\"my\":"      + String(p.my_uT, 3);
     j += ",\"mz\":"      + String(p.mz_uT, 3);
+    j += ",\"imuTempC\":"+ String(p.imu_temp_c, 2);
     j += ",\"thr\":"     + String(p.throttle, 3);
     j += ",\"rcRoll\":"  + String(p.rc_roll,  3);
     j += ",\"rcPitch\":" + String(p.rc_pitch, 3);
@@ -541,6 +546,78 @@ String TelemetryWiFi::_jsonFromPacket(const TelemetryPacket& p) const
     j += ",\"cpuCore0\":"       + String(p.cpu_core0_pct, 1);
     j += ",\"cpuCore1\":"       + String(p.cpu_core1_pct, 1);
     j += ",\"cpuValid\":"       + String(p.cpu_valid ? "true" : "false");
+    j += ",\"rcCh1Us\":" + String(p.rc_ch1_us);
+    j += ",\"rcCh2Us\":" + String(p.rc_ch2_us);
+    j += ",\"rcCh3Us\":" + String(p.rc_ch3_us);
+    j += ",\"rcCh4Us\":" + String(p.rc_ch4_us);
+    j += ",\"rcCh5Us\":" + String(p.rc_ch5_us);
+    j += ",\"rcCh6Us\":" + String(p.rc_ch6_us);
+    j += ",\"rcCh7Us\":" + String(p.rc_ch7_us);
+    j += ",\"rcCh8Us\":" + String(p.rc_ch8_us);
+    j += ",\"rcCh9Us\":" + String(p.rc_ch9_us);
+    j += ",\"rcCh10Us\":" + String(p.rc_ch10_us);
+    j += ",\"rcFailsafeCount\":" + String(p.rc_failsafe_count);
+    j += ",\"angleModeActive\":" + String(p.angle_mode_active ? "true" : "false");
+    j += ",\"acroModeActive\":"  + String(p.acro_mode_active ? "true" : "false");
+    j += ",\"modeSwitchRawUs\":" + String(p.mode_switch_raw_us);
+    j += ",\"armSwitchRawUs\":"  + String(p.arm_switch_raw_us);
+    j += ",\"auxTune1RawUs\":"   + String(p.aux_tune1_raw_us);
+    j += ",\"auxTune2RawUs\":"   + String(p.aux_tune2_raw_us);
+    j += ",\"angleLoopEnabled\":" + String(p.angle_loop_enabled ? "true" : "false");
+    j += ",\"rateLoopEnabled\":"  + String(p.rate_loop_enabled ? "true" : "false");
+    j += ",\"targetYawDeg\":"       + String(p.target_yaw_deg, 3);
+    j += ",\"actualRollRateDps\":"  + String(p.actual_roll_rate_dps, 3);
+    j += ",\"actualPitchRateDps\":" + String(p.actual_pitch_rate_dps, 3);
+    j += ",\"actualYawRateDps\":"   + String(p.actual_yaw_rate_dps, 3);
+    j += ",\"angleRollP\":"      + String(p.angle_roll_p, 8);
+    j += ",\"angleRollI\":"      + String(p.angle_roll_i, 8);
+    j += ",\"angleRollD\":"      + String(p.angle_roll_d, 8);
+    j += ",\"anglePitchP\":"     + String(p.angle_pitch_p, 8);
+    j += ",\"anglePitchI\":"     + String(p.angle_pitch_i, 8);
+    j += ",\"anglePitchD\":"     + String(p.angle_pitch_d, 8);
+    j += ",\"rollP\":"           + String(p.rate_roll_p, 8);
+    j += ",\"rollI\":"           + String(p.rate_roll_i, 8);
+    j += ",\"rollD\":"           + String(p.rate_roll_d, 8);
+    j += ",\"pitchP\":"          + String(p.rate_pitch_p, 8);
+    j += ",\"pitchI\":"          + String(p.rate_pitch_i, 8);
+    j += ",\"pitchD\":"          + String(p.rate_pitch_d, 8);
+    j += ",\"yawP\":"            + String(p.rate_yaw_p, 8);
+    j += ",\"yawI\":"            + String(p.rate_yaw_i, 8);
+    j += ",\"yawD\":"            + String(p.rate_yaw_d, 8);
+    j += ",\"angleRollIterm\":"  + String(p.angle_roll_iterm, 8);
+    j += ",\"anglePitchIterm\":" + String(p.angle_pitch_iterm, 8);
+    j += ",\"pidResetCount\":"   + String(p.pid_reset_count);
+    j += ",\"modeTransitionCount\":" + String(p.mode_transition_count);
+    j += ",\"lastModeChangeMs\":"    + String(p.last_mode_change_ms);
+    j += ",\"armingTransitionCount\":" + String(p.arming_transition_count);
+    j += ",\"lastArmChangeMs\":"       + String(p.last_arm_change_ms);
+    j += ",\"throttleLow\":"      + String(p.throttle_low ? "true" : "false");
+    j += ",\"controlAuthorityRemaining\":" + String(p.control_authority_remaining, 6);
+    j += ",\"rollOutputLimited\":"  + String(p.roll_output_limited ? "true" : "false");
+    j += ",\"pitchOutputLimited\":" + String(p.pitch_output_limited ? "true" : "false");
+    j += ",\"yawOutputLimited\":"   + String(p.yaw_output_limited ? "true" : "false");
+    j += ",\"rateOutputLimited\":"  + String(p.rate_output_limited ? "true" : "false");
+    j += ",\"magNormUt\":"          + String(p.mag_norm_uT, 3);
+    j += ",\"accelRollDeg\":"       + String(p.accel_roll_deg, 3);
+    j += ",\"accelPitchDeg\":"      + String(p.accel_pitch_deg, 3);
+    j += ",\"gyroRollDeg\":"        + String(p.gyro_roll_deg, 3);
+    j += ",\"gyroPitchDeg\":"       + String(p.gyro_pitch_deg, 3);
+    j += ",\"gyroYawDeg\":"         + String(p.gyro_yaw_deg, 3);
+    j += ",\"targetRollDeg\":"      + String(p.target_roll_deg, 3);
+    j += ",\"targetPitchDeg\":"     + String(p.target_pitch_deg, 3);
+    j += ",\"targetRollRateDps\":"  + String(p.target_roll_rate_dps, 3);
+    j += ",\"targetPitchRateDps\":" + String(p.target_pitch_rate_dps, 3);
+    j += ",\"targetYawRateDps\":"   + String(p.target_yaw_rate_dps, 3);
+    j += ",\"rollAngleErrorDeg\":"  + String(p.roll_angle_error_deg, 3);
+    j += ",\"pitchAngleErrorDeg\":" + String(p.pitch_angle_error_deg, 3);
+    j += ",\"rollRateErrorDps\":"   + String(p.roll_rate_error_dps, 3);
+    j += ",\"pitchRateErrorDps\":"  + String(p.pitch_rate_error_dps, 3);
+    j += ",\"yawRateErrorDps\":"    + String(p.yaw_rate_error_dps, 3);
+    j += ",\"yawErrorDeg\":"        + String(p.yaw_error_deg, 3);
+    j += ",\"pidRollOut\":"         + String(p.pid_roll_out, 6);
+    j += ",\"pidPitchOut\":"        + String(p.pid_pitch_out, 6);
+    j += ",\"pidYawOut\":"          + String(p.pid_yaw_out, 6);
+    j += ",\"motorSaturated\":"     + String(p.motor_saturated ? "true" : "false");
     // Runtime tuning values serialized at 8 dp where useful so very small
     // gains like 0.00001 survive the telemetry round trip.
     j += ",\"maxAngleDeg\":"             + String(p.max_angle_deg,                 3);

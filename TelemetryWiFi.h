@@ -42,6 +42,7 @@ struct TelemetryPacket {
 
     // Raw estimator attitude. This is EKF/Mahony/Madgwick output BEFORE level-zero offset.
     float roll_deg, pitch_deg, yaw_deg;
+    float q0, q1, q2, q3;
 
     // Post-AHRS level-zero corrected attitude used by PID/control
     float roll_ctrl_deg, pitch_ctrl_deg, yaw_ctrl_deg;
@@ -51,6 +52,7 @@ struct TelemetryPacket {
     float ax_g, ay_g, az_g;
     float gx_dps, gy_dps, gz_dps;
     float mx_uT, my_uT, mz_uT;
+    float imu_temp_c;
     float raw_ax_g, raw_ay_g, raw_az_g;
     float raw_gx_dps, raw_gy_dps, raw_gz_dps;
     float filt_ax_g, filt_ay_g, filt_az_g;
@@ -68,6 +70,26 @@ struct TelemetryPacket {
     float roll_rate_error_dps, pitch_rate_error_dps, yaw_rate_error_dps;
     float yaw_error_deg;
     float pid_roll_out, pid_pitch_out, pid_yaw_out;
+    bool  angle_mode_active, acro_mode_active;
+    uint16_t rc_ch1_us, rc_ch2_us, rc_ch3_us, rc_ch4_us, rc_ch5_us;
+    uint16_t rc_ch6_us, rc_ch7_us, rc_ch8_us, rc_ch9_us, rc_ch10_us;
+    uint32_t rc_failsafe_count;
+    uint16_t mode_switch_raw_us, arm_switch_raw_us;
+    uint16_t aux_tune1_raw_us, aux_tune2_raw_us;
+    bool  angle_loop_enabled, rate_loop_enabled;
+    float actual_roll_rate_dps, actual_pitch_rate_dps, actual_yaw_rate_dps;
+    float angle_roll_p, angle_roll_i, angle_roll_d;
+    float angle_pitch_p, angle_pitch_i, angle_pitch_d;
+    float rate_roll_p, rate_roll_i, rate_roll_d;
+    float rate_pitch_p, rate_pitch_i, rate_pitch_d;
+    float rate_yaw_p, rate_yaw_i, rate_yaw_d;
+    float angle_roll_iterm, angle_pitch_iterm;
+    uint32_t pid_reset_count;
+    uint32_t mode_transition_count, last_mode_change_ms;
+    uint32_t arming_transition_count, last_arm_change_ms;
+    bool  throttle_low;
+    float control_authority_remaining;
+    bool  roll_output_limited, pitch_output_limited, yaw_output_limited, rate_output_limited;
 
     float throttle, rc_roll, rc_pitch, rc_yaw, rc_hz;
 
