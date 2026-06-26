@@ -649,6 +649,7 @@ String TelemetryWiFi::_jsonFromPacket(const TelemetryPacket& p) const
     JB(",\"yawOutputLimited\":", p.yaw_output_limited);
     JB(",\"rateOutputLimited\":", p.rate_output_limited);
     JF(",\"magNormUt\":", p.mag_norm_uT, 3);
+    JB(",\"ekfMagUsed\":", p.ekf_mag_used);
     JF(",\"accelRollDeg\":", p.accel_roll_deg, 3);
     JF(",\"accelPitchDeg\":", p.accel_pitch_deg, 3);
     JF(",\"gyroRollDeg\":", p.gyro_roll_deg, 3);
